@@ -14,7 +14,7 @@ steps:
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/projects/petstore'
-    includeRootFolder: true
+    includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
     replaceExistingArchive: true
