@@ -21,7 +21,8 @@ steps:
   displayName: 'Import the API To the QA Machine'
 - script: 'newman run api/APITest.json  --reporters cli,junit --reporter-junit-export Results/junitReport.xml -e qa_environment.json'
   workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
-  displayName: 'Run tests on the QA Machine'  
+  displayName: 'Run tests on the QA Machine'
+  continueOnError: true
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
