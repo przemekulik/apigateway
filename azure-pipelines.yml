@@ -5,16 +5,20 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo API Gateway test!
-  displayName: 'Run a one-line script'
 - script: 'sudo npm install -g newman'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
-  displayName: 'Install the New man collection for curling'
+  displayName: 'Prepare the environment'
+- script: git diff --dirstat=files,0 HEAD~1 | sed 's/^[ 0-9.]\+% //g'
+  workingDirectory: '$(System.DefaultWorkingDirectory)'
+  displayName: 'Git Test'
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/projects/petstore'
     includeRootFolder: true
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    archiveFile: '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
     replaceExistingArchive: true
     verbose: true
+- script: 'newman run APIGatewayDeployment.postman_collection.json  --reporters cli --env-var file_Loc="$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip" -e APIGatewayQAEnvironment.postman_environment.json'
+  workingDirectory: '$(System.DefaultWorkingDirectory)'
+  displayName: 'Import the API To the QA Machine'
