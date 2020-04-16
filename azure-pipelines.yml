@@ -22,6 +22,13 @@ steps:
 - script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc="import/$(Build.BuildId).zip" -e qa_environment.json'
   workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
   displayName: 'Import the API To the QA Machine'
-- script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc="import/$(Build.BuildId).zip" -e qa_environment.json ,junit --reporter-junit-export Results\junitReport.xml'
+- script: 'newman run api/APITest.json  --reporters cli,junit --reporter-junit-export Results/junitReport.xml --env-var file_Loc="import/$(Build.BuildId).zip" -e qa_environment.json'
   workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
   displayName: 'Run tests on the QA Machine'  
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '/postman/Results/*.xml'
+    failTaskOnFailedTests: true
+    testRunTitle: 'QA environment test failures'
+    publishRunAttachments: false  
