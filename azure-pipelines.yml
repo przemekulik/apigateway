@@ -28,3 +28,4 @@ steps:
     testResultsFormat: 'JUnit'
     testResultsFiles: '$(System.DefaultWorkingDirectory)/postman/Results/*.xml'
     testRunTitle: 'QA environment test failures'
+    publishRunAttachments: false
