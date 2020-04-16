@@ -29,6 +29,6 @@ steps:
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: '/postman/Results/*.xml'
-    failTaskOnFailedTests: true
+    failTaskOnFailedTests: false
     testRunTitle: 'QA environment test failures'
     publishRunAttachments: false  
