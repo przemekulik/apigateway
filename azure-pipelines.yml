@@ -8,9 +8,6 @@ steps:
 - script: 'sudo npm install -g newman'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
   displayName: 'Prepare the environment'
-- script: git diff --dirstat=files,0 HEAD~1 | sed 's/^[ 0-9.]\+% //g'
-  workingDirectory: '$(System.DefaultWorkingDirectory)'
-  displayName: 'Git Test'
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/projects/petstore'
@@ -28,7 +25,5 @@ steps:
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
-    testResultsFiles: '/postman/Results/*.xml'
-    failTaskOnFailedTests: false
+    testResultsFiles: '$(System.DefaultWorkingDirectory)/postman/Results/*.xml'
     testRunTitle: 'QA environment test failures'
-    publishRunAttachments: false  
