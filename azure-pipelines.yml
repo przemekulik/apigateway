@@ -12,7 +12,7 @@ steps:
   displayName: 'Install the New man collection for curling'
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/projects/${projectID}'
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/projects/petstore'
     includeRootFolder: true
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
