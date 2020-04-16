@@ -7,6 +7,6 @@ pool:
 steps:
 - script: echo API Gateway test!
   displayName: 'Run a one-line script'
-- script: 'npm install -g newman'
+- script: 'sudo npm install -g newman'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
   displayName: 'Install the New man collection for curling'
