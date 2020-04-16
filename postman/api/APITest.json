@@ -1,0 +1,33 @@
+{
+	"variables": [],
+	"info": {
+		"name": "APITest",
+		"_postman_id": "b9e5be80-1627-e0a7-5a6e-f66a2e759ad0",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetPet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/gateway/Swagger%20Petstore/1.0.5/pet/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

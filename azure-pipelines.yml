@@ -19,6 +19,9 @@ steps:
     archiveFile: '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
     replaceExistingArchive: true
     verbose: true
-- script: 'newman run APIGatewayDeployment.postman_collection.json  --reporters cli --env-var file_Loc="$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip" -e APIGatewayQAEnvironment.postman_environment.json'
-  workingDirectory: '$(System.DefaultWorkingDirectory)/postman/import'
+- script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc="import/$(Build.BuildId).zip" -e qa_environment.json'
+  workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
   displayName: 'Import the API To the QA Machine'
+- script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc="import/$(Build.BuildId).zip" -e qa_environment.json ,junit --reporter-junit-export Results\junitReport.xml'
+  workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
+  displayName: 'Run tests on the QA Machine'  
