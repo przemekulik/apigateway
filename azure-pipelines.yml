@@ -20,5 +20,5 @@ steps:
     replaceExistingArchive: true
     verbose: true
 - script: 'newman run APIGatewayDeployment.postman_collection.json  --reporters cli --env-var file_Loc="$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip" -e APIGatewayQAEnvironment.postman_environment.json'
-  workingDirectory: '$(System.DefaultWorkingDirectory)'
+  workingDirectory: '$(System.DefaultWorkingDirectory)/postman/import'
   displayName: 'Import the API To the QA Machine'
