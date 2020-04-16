@@ -10,3 +10,11 @@ steps:
 - script: 'sudo npm install -g newman'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
   displayName: 'Install the New man collection for curling'
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/firstTest'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+    verbose: true
