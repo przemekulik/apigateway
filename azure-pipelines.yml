@@ -7,13 +7,11 @@ pool:
 stages:
  - stage: "Build"
    jobs:
-     - job: "InstallNewman"
+     - job: "CreateAPIDeployable"
        steps:
          - script: 'sudo npm install -g newman'
            workingDirectory: '$(System.DefaultWorkingDirectory)'
            displayName: 'Prepare the environment'
-     - job: "CreateAPIDeployable"
-       steps:
          - task: ArchiveFiles@2
            inputs:
             rootFolderOrFile: '$(System.DefaultWorkingDirectory)/projects/petstore'
@@ -27,13 +25,11 @@ stages:
            displayName: 'Import the API To the QA Machine'
  - stage: "Test"
    jobs:
-     - job: "InstallNewman"
-       steps:
-         - script: 'sudo npm install -g newman'
-           workingDirectory: '$(System.DefaultWorkingDirectory)'
-           displayName: 'Prepare the environment'
      - job: "RunAPIInvokeTests"
        steps:
+        - script: 'sudo npm install -g newman'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          displayName: 'Prepare the environment'
         - script: 'newman run api/APITest.json  --reporters cli,junit --reporter-junit-export Results/junitReport.xml -e qa_environment.json'
           workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
           displayName: 'Run tests on the QA Machine'
