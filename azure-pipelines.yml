@@ -5,15 +5,13 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
- - stage: "Prepare"
-   jobs:
-     - job : "InstallNewmanPlugin"
-       steps:
-       - script: 'sudo npm install -g newman'
-         workingDirectory: '$(System.DefaultWorkingDirectory)'
-         displayName: 'Prepare the environment'
  - stage: "Build"
    jobs:
+     - job: "InstallNewman"
+       steps:
+         - script: 'sudo npm install -g newman'
+           workingDirectory: '$(System.DefaultWorkingDirectory)'
+           displayName: 'Prepare the environment'
      - job: "CreateAPIDeployable"
        steps:
          - task: ArchiveFiles@2
@@ -29,6 +27,11 @@ stages:
            displayName: 'Import the API To the QA Machine'
  - stage: "Test"
    jobs:
+     - job: "InstallNewman"
+       steps:
+         - script: 'sudo npm install -g newman'
+           workingDirectory: '$(System.DefaultWorkingDirectory)'
+           displayName: 'Prepare the environment'
      - job: "RunAPIInvokeTests"
        steps:
         - script: 'newman run api/APITest.json  --reporters cli,junit --reporter-junit-export Results/junitReport.xml -e qa_environment.json'
