@@ -65,6 +65,8 @@ stages:
    condition: succeeded('Test')
    jobs:
      - job: "MergeDevelopToMaster"
+       pool:
+         vmImage: "vs2017-win2016"
        steps:
         - task: CreatePullRequest@1
           inputs:
