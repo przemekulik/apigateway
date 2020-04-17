@@ -20,9 +20,20 @@ stages:
             archiveFile: '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
             replaceExistingArchive: true
             verbose: true 
+         - publish: '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
+           artifact: APIDeployable.zip
          - script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc="import/$(Build.BuildId).zip" -e qa_environment.json'
            workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
            displayName: 'Import the API To the QA Machine'
+ - stage: "Deploy"
+   jobs:
+     - job : "DeployDeployableToAPIGateway"
+       steps:
+         - download: current
+           artifact: APIDeployable.zip
+         - script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc="$(Pipeline.Workspace)/APIDeployable.zip" -e qa_environment.json'
+           workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
+           displayName: 'Import the API To API Gateway'      
  - stage: "Test"
    jobs:
      - job: "RunAPIInvokeTests"
@@ -34,6 +45,8 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
           displayName: 'Run tests on the QA Machine'
           continueOnError: true
+        - publish :  '$(System.DefaultWorkingDirectory)/postman/Results/junitReport.xml'
+          artifact: UnitTestResult.xml
      - job: "RunPerformanceTests"
        steps:
          - script: 'echo Running performance Tests'
@@ -41,10 +54,12 @@ stages:
    jobs:
      - job: "PublishReport"
        steps:
+        - download: current
+          artifact: UnitTest.xml
         - task: PublishTestResults@2
           inputs:
             testResultsFormat: 'JUnit'
-            testResultsFiles: '$(System.DefaultWorkingDirectory)/postman/Results/*.xml'
+            testResultsFiles: '$(Pipeline.Workspace)/*.xml'
             testRunTitle: 'QA environment test failures'
             publishRunAttachments: false
        
