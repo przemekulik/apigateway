@@ -77,13 +77,16 @@ stages:
               # Output
               echo "Releasing version $version"
               echo "-------------------------------------------------------------------------"
-              
+              git config --global user.email "przemek.kulik@gmail.com"
+              git config --global user.name "przemekulik"
+
               # Get current branch and checkout if needed
               branch=$(git symbolic-ref --short -q HEAD)
               if [ "$branch" != "$version" ]; then
                 git checkout $version
               fi
               
+
               # Ensure working directory in version branch clean
               git update-index -q --refresh
               if ! git diff-index --quiet HEAD --; then
@@ -96,7 +99,7 @@ stages:
               git merge $version --no-ff --no-edit
               
               # Run version script, creating a version tag, and push commit and tags to remote
-              npm version $version
+              sudo npm version $version
               git push
               git push --tags
               
