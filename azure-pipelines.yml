@@ -9,9 +9,6 @@ stages:
    jobs:
      - job: "CreateAPIDeployable"
        steps:
-         - script: 'sudo npm install -g newman'
-           workingDirectory: '$(System.DefaultWorkingDirectory)'
-           displayName: 'Prepare the environment'
          - task: ArchiveFiles@2
            inputs:
             rootFolderOrFile: '$(System.DefaultWorkingDirectory)/projects/petstore'
@@ -19,16 +16,18 @@ stages:
             archiveType: 'zip'
             archiveFile: '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
             replaceExistingArchive: true
-            verbose: true 
+            verbose: true
+           displayName: 'Create the API Deployable from the flat representation'
          - publish: '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
            artifact: APIDeployable.zip
-         - script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc="import/$(Build.BuildId).zip" -e qa_environment.json'
-           workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
-           displayName: 'Import the API To the QA Machine'
+           displayName: 'Publish the created API Deployable'
  - stage: "Deploy"
    jobs:
      - job : "DeployDeployableToAPIGateway"
        steps:
+         - script: 'sudo npm install -g newman'
+           workingDirectory: '$(System.DefaultWorkingDirectory)'
+           displayName: 'Prerequisite'
          - download: current
            artifact: APIDeployable.zip
          - script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc="$(Pipeline.Workspace)/APIDeployable.zip" -e qa_environment.json'
@@ -40,7 +39,7 @@ stages:
        steps:
         - script: 'sudo npm install -g newman'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
-          displayName: 'Prepare the environment'
+          displayName: 'Prerequisite'
         - script: 'newman run api/APITest.json  --reporters cli,junit --reporter-junit-export Results/junitReport.xml -e qa_environment.json'
           workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
           displayName: 'Run tests on the QA Machine'
