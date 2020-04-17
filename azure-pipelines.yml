@@ -89,12 +89,12 @@ stages:
               # Checkout master branch and merge version branch into master
               git checkout master
               git merge $version --no-ff --no-edit
-              git push
+              git -c http.extraheader="AUTHORIZATION: bearer $(System.AccessToken)" push
               
               # Checkout dev branch and merge master into dev (to ensure we have the version)
               git checkout dev
               git merge master --no-ff --no-edit
-              git push
+              git -c http.extraheader="AUTHORIZATION: bearer $(System.AccessToken)" push
 
               # Success
               echo "-------------------------------------------------------------------------"
