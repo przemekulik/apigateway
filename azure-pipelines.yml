@@ -54,7 +54,7 @@ stages:
      - job: "PublishReport"
        steps:
         - download: current
-          artifact: UnitTest.xml
+          artifact: UnitTestResult.xml
         - task: PublishTestResults@2
           inputs:
             testResultsFormat: 'JUnit'
