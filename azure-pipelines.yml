@@ -4,28 +4,48 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- script: 'sudo npm install -g newman'
-  workingDirectory: '$(System.DefaultWorkingDirectory)'
-  displayName: 'Prepare the environment'
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/projects/petstore'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-    verbose: true
-- script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc="import/$(Build.BuildId).zip" -e qa_environment.json'
-  workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
-  displayName: 'Import the API To the QA Machine'
-- script: 'newman run api/APITest.json  --reporters cli,junit --reporter-junit-export Results/junitReport.xml -e qa_environment.json'
-  workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
-  displayName: 'Run tests on the QA Machine'
-  continueOnError: true
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: '$(System.DefaultWorkingDirectory)/postman/Results/*.xml'
-    testRunTitle: 'QA environment test failures'
-    publishRunAttachments: false
+stages:
+ - stage: "Prepare environment"
+   jobs:
+     - job : "InstallNewmanPlugin"
+       steps:
+       - script: 'sudo npm install -g newman'
+         workingDirectory: '$(System.DefaultWorkingDirectory)'
+         displayName: 'Prepare the environment'
+ - stage: "Build"
+   jobs:
+     - job: "CreateAPIDeployable"
+       steps:
+         - task: ArchiveFiles@2
+           inputs:
+            rootFolderOrFile: '$(System.DefaultWorkingDirectory)/projects/petstore'
+            includeRootFolder: false
+            archiveType: 'zip'
+            archiveFile: '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
+            replaceExistingArchive: true
+            verbose: true 
+         - script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc="import/$(Build.BuildId).zip" -e qa_environment.json'
+           workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
+           displayName: 'Import the API To the QA Machine'
+ - stage: "Test"
+   jobs:
+     - job: "RunAPIInvokeTests"
+       steps:
+        - script: 'newman run api/APITest.json  --reporters cli,junit --reporter-junit-export Results/junitReport.xml -e qa_environment.json'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
+          displayName: 'Run tests on the QA Machine'
+          continueOnError: true
+     - job: "RunPerformanceTests"
+       steps:
+         - script: 'echo Running performance Tests'
+ - stage: "Report"
+   jobs:
+     - job: "PublishReport"
+       steps:
+        - task: PublishTestResults@2
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: '$(System.DefaultWorkingDirectory)/postman/Results/*.xml'
+            testRunTitle: 'QA environment test failures'
+            publishRunAttachments: false
+       
