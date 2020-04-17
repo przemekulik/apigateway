@@ -66,39 +66,12 @@ stages:
    jobs:
      - job: "MergeDevelopToMaster"
        steps:
-        - task: Bash@3
+        - task: CreatePullRequest@1
           inputs:
-            targetType: 'inline'
-            script: |
-              #!/usr/bin/env bash
-              
-              version=develop
-              
-              # Output
-              echo "Releasing version $version"
-              echo "-------------------------------------------------------------------------"
-              git config --global user.email "przemek.kulik@gmail.com"
-              git config --global user.name "przemekulik"
-
-              # Get current branch and checkout if needed
-              branch=$(git symbolic-ref --short -q HEAD)
-              if [ "$branch" != "$version" ]; then
-                git checkout $version
-              fi
-
-              # Checkout master branch and merge version branch into master
-              git checkout master
-              git merge $version --no-ff --no-edit
-              git -c http.extraheader="AUTHORIZATION: bearer $(System.AccessToken)" push
-              
-              # Checkout dev branch and merge master into dev (to ensure we have the version)
-              git checkout dev
-              git merge master --no-ff --no-edit
-              git -c http.extraheader="AUTHORIZATION: bearer $(System.AccessToken)" push
-
-              # Success
-              echo "-------------------------------------------------------------------------"
-              echo "Release $version complete"
-            failOnStderr: true
+            repoType: 'GitHub'
+            githubEndpoint: 'przemekulik'
+            sourceBranch: 'develop'
+            targetBranch: 'master'
+            title: 'Merge develop to master'
        
        
