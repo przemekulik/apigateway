@@ -64,16 +64,13 @@ stages:
  - stage: "Rollout"
    condition: succeeded('Test')
    jobs:
-     - job: "MergeDevelopToMaster"
-       pool:
-         vmImage: "vs2017-win2016"
+     - job: "PromoteToProd"
        steps:
-        - task: CreatePullRequest@1
-          inputs:
-            repoType: 'GitHub'
-            githubEndpoint: 'przemekulik'
-            sourceBranch: 'develop'
-            targetBranch: 'master'
-            title: 'Merge develop to master'
+        - script: 'sudo npm install -g newman'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          displayName: 'Prerequisite'
+        - script: 'newman run promotion/PromotionManagement.json  --reporters cli -g qa_environment.json -e $(System.DefaultWorkingDirectory)/projects/petstore/promotion_payload.json' --env-var buildNumber="$(Build.BuildId)"
+          workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
+          displayName: 'Promotion to the Production environment'
        
        
