@@ -1,6 +1,6 @@
 {
   "id": "f313be5f-2640-22f7-36b6-3e79bbadc9e2",
-  "name": "APIGatewayQAEnvironment",
+  "name": "QAEnviroment",
   "values": [
     {
       "enabled": true,
@@ -12,6 +12,12 @@
       "enabled": true,
       "key": "auth",
       "value": "Basic dXNwb2NmaXhtZ210OlNvZnRAMTIz",
+      "type": "text"
+    },
+	{
+      "enabled": true,
+      "key": "higherStageKey",
+      "value": "e742a4eb-87e7-4300-820f-cd8851c83061",
       "type": "text"
     }
   ],
