@@ -39,10 +39,20 @@ stages:
         - task: PublishBuildArtifacts@1
           inputs:
             pathToPublish: '$(System.DefaultWorkingDirectory)/postman/Results/junitReport.xml'
-            artifactName: report
+            artifactName: unitTestReport
      - job: "RunPerformanceTests"
        steps:
-         - script: 'echo Running performance Tests'
+         - script: 'sudo npm install -g newman'
+           workingDirectory: '$(System.DefaultWorkingDirectory)'
+           displayName: 'Prerequisite'
+         - script: 'newman run api/PerformanceTest.json  --reporters cli,junit --reporter-junit-export Results/performanceReport.xml -e qa_environment.json'
+           workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
+           displayName: 'Run tests on the QA Machine'
+           continueOnError: true
+         - task: PublishBuildArtifacts@1
+           inputs:
+            pathToPublish: '$(System.DefaultWorkingDirectory)/postman/Results/performanceReport.xml'
+            artifactName: performanceReport
  - stage: "Report"
    jobs:
      - job: "PublishReport"
@@ -51,12 +61,24 @@ stages:
           inputs:
             buildType: 'current'
             downloadType: 'single'
-            artifactName: 'report'
+            artifactName: 'unitTestReport'
+            downloadPath: '$(System.DefaultWorkingDirectory)'
+        - task: DownloadBuildArtifacts@0
+          inputs:
+            buildType: 'current'
+            downloadType: 'single'
+            artifactName: 'performanceReport'
             downloadPath: '$(System.DefaultWorkingDirectory)'
         - task: PublishTestResults@2
           inputs:
-            testResultsFormat: 'JUnit'
-            testResultsFiles: '$(System.DefaultWorkingDirectory)/report/*.xml'
+            testResultsFormat: 'JUnit' 
+            testResultsFiles: '$(System.DefaultWorkingDirectory)/unitTestReport/*.xml'
+            testRunTitle: 'QA environment test failures'
+            publishRunAttachments: false
+        - task: PublishTestResults@2
+          inputs:
+            testResultsFormat: 'JUnit' 
+            testResultsFiles: '$(System.DefaultWorkingDirectory)/performanceReport/*.xml'
             testRunTitle: 'QA environment test failures'
             publishRunAttachments: false
  - stage: "Rollout"
