@@ -5,10 +5,13 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
- - stage: "Build"
+ - stage: "BuildAndDeploy"
    jobs:
-     - job: "CreateAPIDeployable"
+     - job : "BuildAndDeployAPIsToAPIGateway"
        steps:
+         - script: 'sudo npm install -g newman'
+           workingDirectory: '$(System.DefaultWorkingDirectory)'
+           displayName: 'Prerequisite'
          - task: ArchiveFiles@2
            inputs:
             rootFolderOrFile: '$(System.DefaultWorkingDirectory)/projects/petstore'
@@ -18,21 +21,10 @@ stages:
             replaceExistingArchive: true
             verbose: true
            displayName: 'Create the API Deployable from the flat representation'
-         - publish: '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
-           artifact: APIDeployable.zip
-           displayName: 'Publish the created API Deployable'
- - stage: "Deploy"
-   jobs:
-     - job : "DeployDeployableToAPIGateway"
-       steps:
-         - script: 'sudo npm install -g newman'
-           workingDirectory: '$(System.DefaultWorkingDirectory)'
-           displayName: 'Prerequisite'
-         - download: current
-           artifact: APIDeployable.zip
-         - script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc="$(Pipeline.Workspace)/APIDeployable.zip" -e qa_environment.json'
+         - script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc=import/$(Build.BuildId).zip -e qa_environment.json'
            workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
-           displayName: 'Import the API To API Gateway'      
+           displayName: 'Import the Deployable To API Gateway'      
+         - publish :  '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
  - stage: "Test"
    jobs:
      - job: "RunAPIInvokeTests"
@@ -69,8 +61,6 @@ stages:
         - script: 'sudo npm install -g newman'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
           displayName: 'Prerequisite'
-        - script: 'newman run promotion/PromotionManagement.json  --reporters cli -g qa_environment.json -e $(System.DefaultWorkingDirectory)/projects/petstore/promotion_payload.json' --env-var buildNumber="$(Build.BuildId)"
+        - script: 'newman run promotion/PromotionManagement.json  --reporters cli -g qa_environment.json -e $(System.DefaultWorkingDirectory)/projects/petstore/promotion_payload.json --env-var buildNumber=\"$(Build.BuildId)\"'
           workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
-          displayName: 'Promotion to the Production environment'
-       
-       
+          displayName: 'Promotion'
