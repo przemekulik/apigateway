@@ -38,7 +38,7 @@ stages:
           continueOnError: true
         - task: PublishBuildArtifacts@1
           inputs:
-            pathToPublish: 'report.xml/postman/Results/junitReport.xml'
+            pathToPublish: '$(System.DefaultWorkingDirectory)/postman/Results/junitReport.xml'
             artifactName: report.xml
      - job: "RunPerformanceTests"
        steps:
