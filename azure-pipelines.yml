@@ -36,8 +36,10 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
           displayName: 'Run tests on the QA Machine'
           continueOnError: true
-        - publish :  '$(System.DefaultWorkingDirectory)/postman/Results/junitReport.xml'
-          artifact: UnitTestResult.xml
+        - task: PublishBuildArtifacts@1
+          inputs:
+            pathToPublish: '$(System.DefaultWorkingDirectory)/postman/Results/junitReport.xml'
+            artifactName: report
      - job: "RunPerformanceTests"
        steps:
          - script: 'echo Running performance Tests'
@@ -45,12 +47,16 @@ stages:
    jobs:
      - job: "PublishReport"
        steps:
-        - download: current
-          artifact: UnitTestResult.xml
+        - task: DownloadBuildArtifacts@0
+          inputs:
+            buildType: 'current'
+            downloadType: 'single'
+            artifactName: 'report'
+            downloadPath: '$(System.DefaultWorkingDirectory)'
         - task: PublishTestResults@2
           inputs:
             testResultsFormat: 'JUnit'
-            testResultsFiles: '$(Pipeline.Workspace)/*.xml'
+            testResultsFiles: '$(System.DefaultWorkingDirectory)/report/*.xml'
             testRunTitle: 'QA environment test failures'
             publishRunAttachments: false
  - stage: "Rollout"
