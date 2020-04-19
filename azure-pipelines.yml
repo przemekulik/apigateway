@@ -31,7 +31,7 @@ stages:
          - script: 'sudo npm install -g newman'
            workingDirectory: '$(System.DefaultWorkingDirectory)'
            displayName: 'Prerequisite'
-         - script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc=\"$(Pipeline.Workspace)/$(Build.BuildId).zip\" -e qa_environment.json'
+         - script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc=$(Pipeline.Workspace)/$(Build.BuildId).zip -e qa_environment.json'
            workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
            displayName: 'Import the API To API Gateway'      
  - stage: "Test"
