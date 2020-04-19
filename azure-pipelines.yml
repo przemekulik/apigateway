@@ -18,9 +18,12 @@ stages:
             replaceExistingArchive: true
             verbose: true
            displayName: 'Create the API Deployable from the flat representation'
-         - publish: '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
-           artifact: APIDeployable.zip
-           displayName: 'Publish the created API Deployable'
+         - task: CopyFiles@2
+           inputs:
+            SourceFolder: '$(System.DefaultWorkingDirectory)/postman/import/'
+            Contents: '$(Build.BuildId).zip'
+            TargetFolder: '$(Pipeline.Workspace)'
+            OverWrite: true
  - stage: "Deploy"
    jobs:
      - job : "DeployDeployableToAPIGateway"
@@ -30,6 +33,7 @@ stages:
            displayName: 'Prerequisite'
          - download: current
            artifact: APIDeployable.zip
+        
          - script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc=\"$(Pipeline.Workspace)/APIDeployable.zip\" -e qa_environment.json'
            workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
            displayName: 'Import the API To API Gateway'      
