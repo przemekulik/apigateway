@@ -42,6 +42,9 @@ stages:
             artifactName: unitTestReport
      - job: "RunPerformanceTests"
        steps:
+         - script: 'sudo npm install -g newman'
+           workingDirectory: '$(System.DefaultWorkingDirectory)'
+           displayName: 'Prerequisite'
          - script: 'newman run api/PerformanceTest.json  --reporters cli,junit --reporter-junit-export Results/performanceReport.xml -e qa_environment.json'
            workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
            displayName: 'Run tests on the QA Machine'
