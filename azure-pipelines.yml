@@ -39,7 +39,7 @@ stages:
         - task: PublishBuildArtifacts@1
           inputs:
             pathToPublish: '$(System.DefaultWorkingDirectory)/postman/Results/junitReport.xml'
-            artifactName: report.xml
+            artifactName: report
      - job: "RunPerformanceTests"
        steps:
          - script: 'echo Running performance Tests'
@@ -51,12 +51,12 @@ stages:
           inputs:
             buildType: 'current'
             downloadType: 'single'
-            artifactName: 'report.xml'
+            artifactName: 'report'
             downloadPath: '$(System.DefaultWorkingDirectory)'
         - task: PublishTestResults@2
           inputs:
             testResultsFormat: 'JUnit'
-            testResultsFiles: '$(System.DefaultWorkingDirectory)/*.xml'
+            testResultsFiles: '$(System.DefaultWorkingDirectory)/report/*.xml'
             testRunTitle: 'QA environment test failures'
             publishRunAttachments: false
  - stage: "Rollout"
