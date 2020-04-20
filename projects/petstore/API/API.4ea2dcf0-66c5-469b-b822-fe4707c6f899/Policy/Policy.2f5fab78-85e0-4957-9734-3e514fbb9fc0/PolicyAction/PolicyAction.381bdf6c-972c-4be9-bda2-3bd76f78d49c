@@ -10,7 +10,7 @@
     "values" : [ "OR" ]
   }, {
     "templateKey" : "allowAnonymous",
-    "values" : [ "true" ]
+    "values" : [ "false" ]
   }, {
     "templateKey" : "IdentificationRule",
     "parameters" : [ {
