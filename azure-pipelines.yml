@@ -35,7 +35,6 @@ stages:
         - script: 'newman run api/APITest.json  --reporters cli,junit --reporter-junit-export Results/junitReport.xml -e qa_environment.json'
           workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
           displayName: 'Run tests on the QA Machine'
-          continueOnError: true
         - task: PublishBuildArtifacts@1
           inputs:
             pathToPublish: '$(System.DefaultWorkingDirectory)/postman/Results/junitReport.xml'
@@ -48,12 +47,12 @@ stages:
          - script: 'newman run api/PerformanceTest.json  --reporters cli,junit --reporter-junit-export Results/performanceReport.xml -e qa_environment.json -n 50'
            workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
            displayName: 'Run tests on the QA Machine'
-           continueOnError: true
          - task: PublishBuildArtifacts@1
            inputs:
             pathToPublish: '$(System.DefaultWorkingDirectory)/postman/Results/performanceReport.xml'
             artifactName: performanceReport
  - stage: "Report"
+   condition: always()
    jobs:
      - job: "PublishReport"
        steps:
