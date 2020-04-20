@@ -35,9 +35,9 @@ IF EXIST %CURRENT_DIR%/projects/%PROJECT_NAME%/ (
 
 :export
 IF EXIST %CURRENT_DIR%/projects/%PROJECT_NAME%/ (
-curl %GATEWAY_URL%/rest/apigateway/archive -d @"%CURRENT_DIR%\projects\%PROJECT_NAME%\export_payload.json" --output %CURRENT_DIR%/%PROJECT_NAME%_Ovv.zip -u Administrator:manage -H "x-HTTP-Method-Override: GET" -H "Content-Type:application/json"
-powershell Expand-Archive -Path %CURRENT_DIR%/%PROJECT_NAME%.zip -DestinationPath %CURRENT_DIR%/projects/%PROJECT_NAME% -Force
-del %CURRENT_DIR%/%PROJECT_NAME%.zip
+ curl %GATEWAY_URL%/rest/apigateway/archive -d @"%CURRENT_DIR%\projects\%PROJECT_NAME%\export_payload.json" --output %CURRENT_DIR%/%PROJECT_NAME%.zip -u  Administrator:manage -H "x-HTTP-Method-Override: GET" -H "Content-Type:application/json"
+ powershell Expand-Archive -Path %CURRENT_DIR%/%PROJECT_NAME%.zip -DestinationPath %CURRENT_DIR%/projects/%PROJECT_NAME% -Force
+ del "%CURRENT_DIR%/%PROJECT_NAME%.zip"
 goto :EOF
 ) ELSE (
   echo "Project with name %PROJECT_NAME% does not exists"
