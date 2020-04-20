@@ -25,7 +25,7 @@ goto import
 :import 
 IF EXIST %CURRENT_DIR%/apis/%PROJECT_NAME%/ (
  powershell Compress-Archive -Path %CURRENT_DIR%/apis/%PROJECT_NAME%/* -DestinationPath %CURRENT_DIR%/%PROJECT_NAME%.zip -Force
- curl -i -X POST %GATEWAY_URL%/rest/apigateway/archive -H "Content-Type: application/zip" -H "Accept:application/json" --data-binary @"%CURRENT_DIR%/%PROJECT_NAME%.zip" --user Administrator:manage
+ curl -i -X POST %GATEWAY_URL%/rest/apigateway/archive?overwrite=* -H "Content-Type: application/zip" -H "Accept:application/json" --data-binary @"%CURRENT_DIR%/%PROJECT_NAME%.zip" --user Administrator:manage
  del "%CURRENT_DIR%/%PROJECT_NAME%.zip"
  goto :EOF
 ) ELSE (

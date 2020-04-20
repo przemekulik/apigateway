@@ -91,6 +91,6 @@ stages:
         - script: 'sudo npm install -g newman'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
           displayName: 'Prerequisite'
-        - script: 'newman run promotion/PromotionManagement.json  --reporters cli -g qa_environment.json -e $(System.DefaultWorkingDirectory)/apis/petstore/promotion_payload.json --env-var buildNumber=\"$(Build.BuildId)\"'
+        - script: 'newman run promotion/PromotionManagement.json  --reporters cli -g qa_environment.json -e $(System.DefaultWorkingDirectory)/apis/petstore/promotion_payload.json --env-var buildNumber=$(Build.BuildId)'
           workingDirectory: '$(System.DefaultWorkingDirectory)/tests'
           displayName: 'Promotion'

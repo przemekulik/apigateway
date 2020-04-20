@@ -26,7 +26,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t\"description\": \"Promotion Set to promote to Prod\",\r\n\t\"name\": \"{{buildNumber}}\",\r\n\t\"destinationStages\": [\r\n\t\t\"{{higherStageKey}}\"\r\n\t],\r\n\t\"promotedAssets\": {{data}}\r\n}"
+					"raw": "{\r\n\t\"description\": \"Promotion Set to promote to Prod\",\r\n\t\"name\": \"{{buildNumber}}\",\r\n\t\"destinationStages\": [\r\n\t\t\"{{higherStageKey}}\"\r\n\t],\r\n\t\"promotedAssets\": {{promotion_data}}\r\n}"
 				},
 				"description": ""
 			},
