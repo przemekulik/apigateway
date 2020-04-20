@@ -35,11 +35,11 @@ stages:
         - script: 'newman run api/APITest.json  --reporters cli,junit --reporter-junit-export Results/junitReport.xml -e qa_environment.json'
           workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
           displayName: 'Run tests on the QA Machine'
-          continueOnError: true
         - task: PublishBuildArtifacts@1
           inputs:
             pathToPublish: '$(System.DefaultWorkingDirectory)/postman/Results/junitReport.xml'
             artifactName: unitTestReport
+          condition: always() 
      - job: "RunPerformanceTests"
        steps:
          - script: 'sudo npm install -g newman'
@@ -48,12 +48,13 @@ stages:
          - script: 'newman run api/PerformanceTest.json  --reporters cli,junit --reporter-junit-export Results/performanceReport.xml -e qa_environment.json -n 50'
            workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
            displayName: 'Run tests on the QA Machine'
-           continueOnError: true
          - task: PublishBuildArtifacts@1
            inputs:
             pathToPublish: '$(System.DefaultWorkingDirectory)/postman/Results/performanceReport.xml'
             artifactName: performanceReport
+           condition: always()
  - stage: "Report"
+   condition: always()
    jobs:
      - job: "PublishReport"
        steps:
@@ -83,7 +84,7 @@ stages:
             publishRunAttachments: false
  - stage: "Rollout"
    dependsOn: Test
-   condition: in(dependencies.Test.result, 'Succeeded', 'SucceededWithIssues', 'Skipped') 
+   condition: in(dependencies.a.result, 'Succeeded', 'SucceededWithIssues', 'Skipped') 
    jobs:
      - job: "PromoteToProd"
        steps:
