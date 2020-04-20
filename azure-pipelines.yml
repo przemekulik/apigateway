@@ -14,17 +14,17 @@ stages:
            displayName: 'Prerequisite'
          - task: ArchiveFiles@2
            inputs:
-            rootFolderOrFile: '$(System.DefaultWorkingDirectory)/projects/petstore'
+            rootFolderOrFile: '$(System.DefaultWorkingDirectory)/apis/petstore'
             includeRootFolder: false
             archiveType: 'zip'
-            archiveFile: '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
+            archiveFile: '$(System.DefaultWorkingDirectory)/tests/import/$(Build.BuildId).zip'
             replaceExistingArchive: true
             verbose: true
            displayName: 'Create the API Deployable from the flat representation'
          - script: 'newman run import/ImportAPI.json  --reporters cli --env-var file_Loc=import/$(Build.BuildId).zip -e qa_environment.json'
-           workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
+           workingDirectory: '$(System.DefaultWorkingDirectory)/tests'
            displayName: 'Import the Deployable To API Gateway'      
-         - publish :  '$(System.DefaultWorkingDirectory)/postman/import/$(Build.BuildId).zip'
+         - publish :  '$(System.DefaultWorkingDirectory)/tests/import/$(Build.BuildId).zip'
  - stage: "Test"
    jobs:
      - job: "RunAPIInvokeTests"
@@ -33,11 +33,11 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)'
           displayName: 'Prerequisite'
         - script: 'newman run api/APITest.json  --reporters cli,junit --reporter-junit-export Results/junitReport.xml -e qa_environment.json'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/tests'
           displayName: 'Run tests on the QA Machine'
         - task: PublishBuildArtifacts@1
           inputs:
-            pathToPublish: '$(System.DefaultWorkingDirectory)/postman/Results/junitReport.xml'
+            pathToPublish: '$(System.DefaultWorkingDirectory)/tests/Results/junitReport.xml'
             artifactName: unitTestReport
           condition: always() 
      - job: "RunPerformanceTests"
@@ -46,11 +46,11 @@ stages:
            workingDirectory: '$(System.DefaultWorkingDirectory)'
            displayName: 'Prerequisite'
          - script: 'newman run api/PerformanceTest.json  --reporters cli,junit --reporter-junit-export Results/performanceReport.xml -e qa_environment.json -n 50'
-           workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
+           workingDirectory: '$(System.DefaultWorkingDirectory)/tests'
            displayName: 'Run tests on the QA Machine'
          - task: PublishBuildArtifacts@1
            inputs:
-            pathToPublish: '$(System.DefaultWorkingDirectory)/postman/Results/performanceReport.xml'
+            pathToPublish: '$(System.DefaultWorkingDirectory)/tests/Results/performanceReport.xml'
             artifactName: performanceReport
            condition: always()
  - stage: "Report"
@@ -91,6 +91,6 @@ stages:
         - script: 'sudo npm install -g newman'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
           displayName: 'Prerequisite'
-        - script: 'newman run promotion/PromotionManagement.json  --reporters cli -g qa_environment.json -e $(System.DefaultWorkingDirectory)/projects/petstore/promotion_payload.json --env-var buildNumber=\"$(Build.BuildId)\"'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/postman'
+        - script: 'newman run promotion/PromotionManagement.json  --reporters cli -g qa_environment.json -e $(System.DefaultWorkingDirectory)/apis/petstore/promotion_payload.json --env-var buildNumber=\"$(Build.BuildId)\"'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/tests'
           displayName: 'Promotion'

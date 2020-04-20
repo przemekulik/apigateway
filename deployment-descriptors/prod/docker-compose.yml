@@ -1,0 +1,43 @@
+version: "3.4"
+services:
+  qaimage:
+   image: daerepository03.eur.ad.sag:4443/api-management/apigateway-dev:qa
+   ports:
+    - "8987:8987"
+    - "2233:2233"
+    - "2232:2232"
+    - "3334:3334"
+    - "2225:2225"
+    - "1111:1111"
+    - "5000:5000"
+    - "5555:5555"
+    - "9072:9072"
+    - "6003:6003"
+    - "6002:6002"
+    - "9240:9240"
+    - "8081:8081"
+    - "8181:8181"
+    - "8080:8080"
+    - "2503:2503"
+   networks:
+    - apigw
+   environment:
+    - "LANG=en_US.UTF-8"
+    - "LANGUAGE=en_US:en"
+    - "LC_ALL=en_US.UTF-8"
+  jersey-native:
+   image: daerepository03.eur.ad.sag:4443/api-management/apigateway-tests-nativeservices-jersey
+   hostname: jersey-native
+   ports:
+    - "9998:9998"
+   networks:
+    - apigw
+  is-native:
+   image: daerepository03.eur.ad.sag:4443/api-management/apigateway-tests-nativeservices-is
+   hostname: is-native
+   ports:
+    - "5559:5555"
+   networks:
+    - apigw
+networks:
+   apigw:
