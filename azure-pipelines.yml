@@ -82,7 +82,8 @@ stages:
             testRunTitle: 'QA environment test failures'
             publishRunAttachments: false
  - stage: "Rollout"
-   condition: succeeded('Test')
+   dependsOn: Test
+   condition: in(dependencies.Test.result, 'Succeeded', 'SucceededWithIssues', 'Skipped') 
    jobs:
      - job: "PromoteToProd"
        steps:
