@@ -3,5 +3,5 @@
   "name" : "PetStore_Routing_Alias",
   "type" : "simple",
   "owner" : "Administrator",
-  "value" : "https://petstore.swagger.io/v2/"
+  "value" : "https://petstore.swagger.io/v2/${sys:resource_path}"
 }
