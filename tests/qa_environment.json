@@ -5,19 +5,19 @@
     {
       "enabled": true,
       "key": "url",
-      "value": "https://uspocfixmgmt.gateway.webmethodscloud.com",
+      "value": "https://kulik.gateway.webmethodscloud.com",
       "type": "text"
     },
 	{
       "enabled": true,
       "key": "httpInvokeUrl",
-      "value": "http://uspocfixmgmt.gateway.webmethodscloud.com",
+      "value": "http://kulik.gateway.webmethodscloud.com/",
       "type": "text"
     },
     {
       "enabled": true,
       "key": "auth",
-      "value": "Basic dXNwb2NmaXhtZ210OlNvZnRAMTIz",
+      "value": "Basic bWFkaGF2YW46TWFkaGF2YW5AMTIz",
       "type": "text"
     },
 	{
