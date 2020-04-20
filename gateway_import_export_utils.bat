@@ -26,7 +26,7 @@ goto import
 IF EXIST %CURRENT_DIR%/projects/%PROJECT_NAME%/ (
  powershell Compress-Archive -Path %CURRENT_DIR%/projects/%PROJECT_NAME%/* -DestinationPath %CURRENT_DIR%/%PROJECT_NAME%.zip -Force
  curl -i -X POST %GATEWAY_URL%/rest/apigateway/archive -H "Content-Type: application/zip" -H "Accept:application/json" --data-binary @"%CURRENT_DIR%/%PROJECT_NAME%.zip" --user Administrator:manage
- del %CURRENT_DIR%/%PROJECT_NAME%.zip
+ del "%CURRENT_DIR%/%PROJECT_NAME%.zip"
  goto :EOF
 ) ELSE (
   echo "Project with name %PROJECT_NAME% does not exists"

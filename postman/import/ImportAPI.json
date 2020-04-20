@@ -10,7 +10,7 @@
 		{
 			"name": "ImportAPI",
 			"request": {
-				"url": "{{url}}/rest/apigateway/archive",
+				"url": "{{url}}/rest/apigateway/archive?overwrite=true",
 				"method": "POST",
 				"header": [
 					{
