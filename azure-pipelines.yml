@@ -39,6 +39,7 @@ stages:
           inputs:
             pathToPublish: '$(System.DefaultWorkingDirectory)/postman/Results/junitReport.xml'
             artifactName: unitTestReport
+          condition: always() 
      - job: "RunPerformanceTests"
        steps:
          - script: 'sudo npm install -g newman'
@@ -51,6 +52,7 @@ stages:
            inputs:
             pathToPublish: '$(System.DefaultWorkingDirectory)/postman/Results/performanceReport.xml'
             artifactName: performanceReport
+           condition: always()
  - stage: "Report"
    condition: always()
    jobs:
@@ -82,7 +84,7 @@ stages:
             publishRunAttachments: false
  - stage: "Rollout"
    dependsOn: Test
-   condition: in(dependencies.Test.result, 'Succeeded', 'SucceededWithIssues', 'Skipped') 
+   condition: in(dependencies.a.result, 'Succeeded', 'SucceededWithIssues', 'Skipped') 
    jobs:
      - job: "PromoteToProd"
        steps:
