@@ -1,12 +1,8 @@
 {
   "id" : "f99da7fd-d6ca-47fe-8f6b-706e3bac0b2a",
   "names" : [ {
-    "value" : "Require HTTP / HTTPS",
+    "value" : "Enable HTTP / HTTPS",
     "locale" : "en"
-  } ],
-  "descriptions" : [ {
-    "value" : "",
-    "locale" : "English"
   } ],
   "templateKey" : "entryProtocolPolicy",
   "parameters" : [ {

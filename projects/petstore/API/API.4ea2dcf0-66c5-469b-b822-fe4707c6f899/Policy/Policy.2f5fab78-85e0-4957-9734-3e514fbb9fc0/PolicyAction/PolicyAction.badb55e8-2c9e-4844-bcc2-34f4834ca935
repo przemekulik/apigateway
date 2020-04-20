@@ -4,14 +4,13 @@
     "value" : "Straight Through Routing",
     "locale" : "en"
   } ],
-  "descriptions" : [ {
-    "value" : "",
-    "locale" : "English"
-  } ],
   "templateKey" : "straightThroughRouting",
   "parameters" : [ {
     "templateKey" : "endpointUri",
     "values" : [ "https://petstore.swagger.io/v2/${sys:resource_path}" ]
+  }, {
+    "templateKey" : "method",
+    "values" : [ "CUSTOM" ]
   } ],
   "active" : false
 }
