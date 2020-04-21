@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <asset_composite name="APIGatewayAssets" displayName="Assets for API Gateway" runtimeVersion="10.5" targetNamespace="http://namespaces.softwareag.com/webMethods/APIGateway" xmlns="http://namespaces.softwareag.com/acdl/1.0" xmlns:EDA="http://namespaces.softwareag.com/webMethods/EDA" xmlns:MWS="http://namespaces.softwareag.com/webMethods/MWS" xmlns:IS="http://namespaces.softwareag.com/webMethods/IS" xmlns:APIPORTAL="http://namespaces.softwareag.com/webMethods/APIPORTAL" xmlns:AgileApps="http://namespaces.softwareag.com/webMethods/AgileApps" xmlns:BROKER="http://namespaces.softwareag.com/webMethods/BROKER" xmlns:implDetails="http://namespaces.softwareag.com/acdl/implDetails" xmlns:UniversalMessaging="http://namespaces.softwareag.com/webMethods/UniversalMessaging" xmlns:TN="http://namespaces.softwareag.com/webMethods/TN" xmlns:RULES="http://namespaces.softwareag.com/webMethods/RULES" xmlns:BPM="http://namespaces.softwareag.com/webMethods/BPM" xmlns:Optimize="http://namespaces.softwareag.com/webMethods/Optimize">
-    <buildInfo name="BuildTimestamp" value="2020-04-21T11:17:23"/>
+    <buildInfo name="BuildTimestamp" value="2020-04-21T11:28:26"/>
     <asset name="API.4ea2dcf0-66c5-469b-b822-fe4707c6f899" displayName="Swagger Petstore[1.0.5]" isDeployable="true">
         <implementation.generic type="API"/>
         <dependsOn>APIGateway:Policy.2f5fab78-85e0-4957-9734-3e514fbb9fc0</dependsOn>
     </asset>
     <asset name="Policy.2f5fab78-85e0-4957-9734-3e514fbb9fc0" displayName="Policy For API Swagger Petstore[1.0.5]" isDeployable="true">
         <implementation.generic type="Policy"/>
-        <dependsOn>APIGateway:PolicyAction.7c607ff2-d73b-4354-b06f-d98a3d2b3976</dependsOn>
         <dependsOn>APIGateway:PolicyAction.badb55e8-2c9e-4844-bcc2-34f4834ca935</dependsOn>
         <dependsOn>APIGateway:PolicyAction.f99da7fd-d6ca-47fe-8f6b-706e3bac0b2a</dependsOn>
     </asset>
@@ -20,9 +19,6 @@
         <property name="value for Simple alias PetStore_Routing_Alias" many="false" isSecure="false" displayName="value for Simple alias PetStore_Routing_Alias">
             <value>https://petstore.swagger.io/v2/${sys:resource_path}</value>
         </property>
-    </asset>
-    <asset name="PolicyAction.7c607ff2-d73b-4354-b06f-d98a3d2b3976" displayName="Policy Action [Identify &amp; Authorize Application] -&gt; Policy For API Swagger Petstore[1.0.5]" isDeployable="true">
-        <implementation.generic type="PolicyAction"/>
     </asset>
     <asset name="PolicyAction.f99da7fd-d6ca-47fe-8f6b-706e3bac0b2a" displayName="Policy Action [Enable HTTP / HTTPS] -&gt; Policy For API Swagger Petstore[1.0.5]" isDeployable="true">
         <implementation.generic type="PolicyAction"/>
