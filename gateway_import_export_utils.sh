@@ -1,7 +1,7 @@
 #!/bin/bash
 ##############################################################################
 ##
-#download#
+## Sample CLI utility for importing and exporting API Gateway assets
 ##
 ##############################################################################
 CURR_DIR="$PWD"
@@ -12,13 +12,13 @@ api=
 shldDoImport=
 #Usage of this script
 usage(){
-echo "Usage: $0a rgs"
+echo "Usage: $0 args"
 echo "args:"
-echo "--import(or)--export  *To import or export from the flat file"
-echo "--api.name		    *The API project to import"
-echo "--apigateway.url      APIGateway url to import or export from.Default is http://localhost:5555"
-echo "--username            The APIGateway username.Default is Administrator."
-echo "--password            The APIGateway password.Default is password."
+echo "  --import (or) --export  To import or export from the flat file"
+echo "  --api.name              The API project to import"
+echo "  --apigateway.url        The API Gateway URL to import or export from. Default is http://localhost:5555"
+echo "  --username              The API Gateway username. Default is Administrator."
+echo "  --password              The API Gateway password. Default is password."
 exit
 }
 
