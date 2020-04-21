@@ -1265,12 +1265,12 @@
   },
   "nativeEndpoint" : [ {
     "passSecurityHeaders" : true,
-    "uri" : "https://petstore.swagger.io/v2",
+    "uri" : "http://petstore.swagger.io/v2",
     "connectionTimeoutDuration" : 0,
     "alias" : false
   }, {
     "passSecurityHeaders" : true,
-    "uri" : "http://petstore.swagger.io/v2",
+    "uri" : "https://petstore.swagger.io/v2",
     "connectionTimeoutDuration" : 0,
     "alias" : false
   } ],
@@ -1288,7 +1288,7 @@
   "scopes" : [ ],
   "publishedPortals" : [ ],
   "creationDate" : "2020-04-08 16:06:04 GMT",
-  "lastModified" : "2020-04-20 13:36:11 GMT",
+  "lastModified" : "2020-04-21 07:44:23 GMT",
   "systemVersion" : 1,
   "id" : "4ea2dcf0-66c5-469b-b822-fe4707c6f899"
 }

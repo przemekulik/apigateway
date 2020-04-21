@@ -19,19 +19,13 @@
     "stageKey" : "routing"
   }, {
     "enforcements" : [ {
-      "enforcementObjectId" : "6321e978-71c9-4d0a-a65c-464dbd129f33",
-      "order" : "0"
-    } ],
-    "stageKey" : "IAM"
-  }, {
-    "enforcements" : [ {
       "enforcementObjectId" : "f99da7fd-d6ca-47fe-8f6b-706e3bac0b2a",
       "order" : "0"
     } ],
     "stageKey" : "transport"
   } ],
   "policyScope" : "SERVICE",
+  "global" : false,
   "active" : false,
-  "systemPolicy" : false,
-  "global" : false
+  "systemPolicy" : false
 }
