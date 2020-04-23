@@ -19,12 +19,6 @@
     "stageKey" : "routing"
   }, {
     "enforcements" : [ {
-      "enforcementObjectId" : "1a8f6ba8-ecdb-4d6c-bbfb-b2403a5f7760",
-      "order" : "0"
-    } ],
-    "stageKey" : "IAM"
-  }, {
-    "enforcements" : [ {
       "enforcementObjectId" : "f99da7fd-d6ca-47fe-8f6b-706e3bac0b2a",
       "order" : "0"
     } ],
